@@ -81,8 +81,8 @@ class Drawer {
 
 class Board {
 	isFull() {
-		for (let i = 0; i < this.boardSize; i++)
-			for (let j = 0; j < this.boardSize; j++)
+		for (let i = 0; i < this.mapSize; i++)
+			for (let j = 0; j < this.mapSize; j++)
 				if (this.map[i][j] == 0) return false;
 		return true;
 	}
@@ -101,29 +101,85 @@ class Board {
 		}
 	}
 
-	isMovePossible() {
-		// TODO
+	// for square two-dimensinal arrays
+	arraysEqual(a1, a2) {
+		let equal = true;
+		if (a1.length != a2.length) return false;
+		for (let i = 0; i < a1.length; i++) {
+			for (let j = 0; j < a1.length; j++) {
+				if (a1[i][j] != a2[i][j]) return false;
+			}
+		}
 		return true;
 	}
 
+	isMovePossible() {
+		if(!this.isFull()) return true;
+		for (let direction = Direction.UP; direction <= Direction.LEFT; direction++) {
+			if (!this.arraysEqual(this.moveMap(direction), this.map)) return true;	
+		}
+		return false;
+	}
+
 	spawnNew() {
-		if (this.isMovePossible()) {
-			while(true){
-				let i = Math.floor(Math.random() * this.mapSize);
-				let j = Math.floor(Math.random() * this.mapSize);
-				if (this.map[i][j] == 0) {
-					if (this.score >= 100 && Math.random() < 0.2) 
-						this.map[i][j] = 4;
-					else						
-						this.map[i][j] = 2;
-					return;
-				}
+		while(true){
+			let i = Math.floor(Math.random() * this.mapSize);
+			let j = Math.floor(Math.random() * this.mapSize);
+			if (this.map[i][j] == 0) {
+				if (Math.random() < 0.2) 
+					this.map[i][j] = 4;
+				else						
+					this.map[i][j] = 2;
+				return;
 			}
 		}
 	}
 
 	moveMap(direction){
-		let map = this.map;
+		// copy this.map to the map
+		let map = [];
+		for (let i = 0; i < this.mapSize; i++) {
+			map[i] = [];
+			for (let j = 0; j < this.mapSize; j++) 
+				map[i][j] = this.map[i][j];
+		}
+
+		/*if (direction == Direction.UP || direction == Direction.DOWN) {
+			for (let j = 0; j < this.mapSize; j++) {
+				if (direction == Direction.UP) {
+					for (let i = 1; i < this.mapSize; i++) {
+						moveF(i, j, map, direction);
+					}
+				}
+				if (direction == Direction.DOWN) {
+					for (let i = this.mapSize - 2; i >= 0; i--) {
+						moveF(i, j, map, direction);
+					}
+				}
+			}
+		} 
+		if (direction == Direction.LEFT || direction == Direction.RIGHT) {
+			for (let i = 0; i < this.mapSize; i++) {
+				if (direction == Direction.LEFT) {
+					for (let j = 1; j < this.mapSize; j++) {
+						moveF(i, j, map, direction);
+					}
+				}
+				if (direction == Direction.RIGHT) {
+					for (let j = this.mapSize - 2; j >= 0; j--) {
+						moveF(i, j, map, direction);
+					}
+				}
+			}
+		}*/
+
+		let changedTiles = [];
+		for (let i = 0; i < this.mapSize; i++) {
+			changedTiles[i] = [];
+			for (let j = 0; j < this.mapSize; j++) {
+				changedTiles[i][j] = false;
+			}
+		}
 
 		if(direction == Direction.UP) {
 			for (let j = 0; j < this.mapSize; j++) {
@@ -147,8 +203,13 @@ class Board {
 						map[newI][j] = curVal;
 						continue;
 					}
-					if (map[newI][j] == curVal) {
+					if (map[newI][j] == curVal && changedTiles[newI][j] == true) {
+						map[newI + 1][j] = curVal;
+						continue;
+					}
+					if (map[newI][j] == curVal && changedTiles[newI][j] == false) {
 						map[newI][j] = curVal * 2;
+						changedTiles[newI][j] = true;
 						this.score += curVal * 2;
 					}
 				}
@@ -178,8 +239,85 @@ class Board {
 						map[newI][j] = curVal;
 						continue;
 					}
-					if (map[newI][j] == curVal) {
+					if (map[newI][j] == curVal && changedTiles[newI][j] == true) {
+						map[newI - 1][j] = curVal;
+						continue;
+					}
+					if (map[newI][j] == curVal && changedTiles[newI][j] == false) {
 						map[newI][j] = curVal * 2;
+						changedTiles[newI][j] = true;
+						this.score += curVal * 2;
+					}
+				}
+			}
+		}
+
+
+		if(direction == Direction.LEFT) {
+			for (let i = 0; i< this.mapSize; i++) {
+				for (let j = 1; j < this.mapSize; j++) {
+					let newJ = j;
+					let curVal = map[i][j];
+					for (let k = j - 1; k >= 0; k--) {
+						if (map[i][k] == 0) {
+							newJ = k;
+							continue;
+						}
+						if (map[i][k] != curVal) break;
+						if (map[i][k] == curVal) {
+							newJ = k; 
+							break;
+						}
+					}
+					if (newJ == j) continue;
+					map[i][j] = 0;
+					if (map[i][newJ] == 0) {
+						map[i][newJ] = curVal;
+						continue;
+					}
+					if (map[i][newJ] == curVal && changedTiles[i][newJ] == true) {
+						map[i][newJ + 1] = curVal;
+						continue;
+					}
+					if (map[i][newJ] == curVal && changedTiles[i][newJ] == false) {
+						map[i][newJ] = curVal * 2;
+						changedTiles[i][newJ] = true;
+						this.score += curVal * 2;
+					}
+				}
+			}
+		}
+
+
+		if(direction == Direction.RIGHT) {
+			for (let i = 0; i< this.mapSize; i++) {
+				for (let j = this.mapSize - 2; j >= 0; j--) {
+					let newJ = j;
+					let curVal = map[i][j];
+					for (let k = j + 1; k < this.mapSize; k++) {
+						if (map[i][k] == 0) {
+							newJ = k;
+							continue;
+						}
+						if (map[i][k] != curVal) break;
+						if (map[i][k] == curVal) {
+							newJ = k; 
+							break;
+						}
+					}
+					if (newJ == j) continue;
+					map[i][j] = 0;
+					if (map[i][newJ] == 0) {
+						map[i][newJ] = curVal;
+						continue;
+					}
+					if (map[i][newJ] == curVal && changedTiles[i][newJ] == true) {
+						map[i][newJ - 1] = curVal;
+						continue;
+					}
+					if (map[i][newJ] == curVal && changedTiles[i][newJ] == false) {
+						map[i][newJ] = curVal * 2;
+						changedTiles[i][newJ] = true;
 						this.score += curVal * 2;
 					}
 				}
@@ -189,8 +327,13 @@ class Board {
 		return map;
 	}
 
+	// makes a move in a specified direction and spawns new tile if it's possible
 	move(direction) {
-		this.map = this.moveMap(direction);
+		let newMap = this.moveMap(direction);
+		let mapsEqual = this.arraysEqual(this.map, newMap);
+		if (mapsEqual) return;
+
+		this.map = newMap;
 
 		this.spawnNew();
 	}
@@ -198,25 +341,50 @@ class Board {
 
 
 let canvas = document.getElementById('gameCanvas');
-let map = [
-[0, 0, 2, 0],
-[2, 4, 0, 0],
-[4, 2, 0, 8],
-[8, 8, 0, 2]
-];
-
-let board = new Board(4);
-board.spawnNew();
-
 let drawer = new Drawer(canvas, CANVAS_SIZE);
-drawer.drawMap(board.map);
+let board;
+let gameStarted
 
-let gameStarted = true;
+let bestScore = 0;
+gameStart();
+
+
+// game process initializing
+function gameStart() {
+	board = new Board(4);
+	board.spawnNew();
+	board.spawnNew();
+	drawer.drawMap(board.map);
+	gameStarted = true;
+	document.querySelector('.score').innerText = "Score: 0";
+}
+
 
 document.addEventListener('keydown', (event) => {
+	if (!gameStarted) return;
+
 	if(event.key == "ArrowUp") board.move(Direction.UP);
 	if(event.key == "ArrowDown") board.move(Direction.DOWN);
+	if(event.key == "ArrowLeft") board.move(Direction.LEFT);
+	if(event.key == "ArrowRight") board.move(Direction.RIGHT);
+
 	drawer.drawMap(board.map);
+
+	// scores
 	document.querySelector('.score').innerText = "Score: " + board.score;
-	console.log(board.map);
+	if (bestScore < board.score) bestScore = board.score;
+	document.querySelector('.bestScore').innerText = "Best: " + bestScore;
+
+	if (!board.isMovePossible()) {
+		gameStarted = false;
+		alert("The end! Your score: " + board.score);
+	}
 });
+
+
+
+
+// new game button
+document.querySelector('button.new-game').addEventListener("click", function(e){
+	gameStart();
+})
