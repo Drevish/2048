@@ -14,68 +14,24 @@ let Direction = {
 };
 
 class Drawer {
-	constructor(canvas, canvasSize) {
-		this.canvasSize = canvasSize;
-		this.cx = canvas.getContext("2d");
-
-		// setting up canvas size		
-		canvas.width = canvasSize;
-		canvas.height = canvasSize;
-
-		// tiles settings
-		this.tilesColor = {
-			0: '#CDC1B4',
-			2: '#EEE4DA',
-			4: '#EDE0C8',
-			8: '#F2B179',
-			16: '#F59563',
-			32: '#F67C5F',
-			64: '#F65E3B',
-			128: '#EDCF72'
-		}
-	}
+	constructor() {}
 
 	drawMap(map) {
-		let mapSize = map.length;
-		// font setting
-		this.cx.font = CANVAS_FONT;
-		let fontColor = CANVAS_FONT_COLOR;
-
-		// drawing tiles
-		let tileSize = this.canvasSize / mapSize;
-		map.forEach(function(row, i) {
-			row.forEach(function(n, j) {
-				// tile background filling
-				this.cx.fillStyle = this.tilesColor[map[i][j]];
-				this.cx.fillRect(tileSize * j, tileSize * i, tileSize * (j + 1), tileSize * (i + 1));
-
-				// tile text writing
-				this.cx.fillStyle = fontColor; // text color
-				if (map[i][j] !== 0)
-					this.cx.fillText(map[i][j], tileSize * j + tileSize / 2 - 15, tileSize * i + tileSize / 2 + 15);
-			}.bind(this));
-		}.bind(this));
-
-		// drawing borders
-		this.cx.strokeStyle = BORDERS_COLOR;	// borders color
-		for (let i = 0; i < mapSize + 1; i++) {
-			this.cx.beginPath();
-
-			// border width setting
-			if (i == 0 || i == mapSize) 
-				this.cx.lineWidth = 20;
-			else 
-				this.cx.lineWidth = 10;
-
-			// horizontal line
-			this.cx.moveTo(0, tileSize * i);
-			this.cx.lineTo(this.canvasSize, tileSize * i);
-			// vertical line
-			this.cx.moveTo(tileSize * i, 0);
-			this.cx.lineTo(tileSize * i, this.canvasSize);
-
-			this.cx.stroke();
+		let table = document.querySelector('table#game-field');
+		let s = "";
+		for (let i = 0; i < 4; i++) {
+			s += "<tr>";
+			for (let j = 0; j < 4; j++) {
+				s += "<td class='tile-";
+				s += map[i][j];
+				s += "'>";
+				if (map[i][j] != 0) s+= map[i][j];
+				else s+= "";
+				s += "</td>";
+			}
+			s += "</tr>"
 		}
+		table.innerHTML = s;
 	}
 }
 
@@ -126,7 +82,7 @@ class Board {
 			let i = Math.floor(Math.random() * this.mapSize);
 			let j = Math.floor(Math.random() * this.mapSize);
 			if (this.map[i][j] == 0) {
-				if (Math.random() < 0.2) 
+				if (Math.random() < 0.1) 
 					this.map[i][j] = 4;
 				else						
 					this.map[i][j] = 2;
@@ -340,8 +296,8 @@ class Board {
 }
 
 
-let canvas = document.getElementById('gameCanvas');
-let drawer = new Drawer(canvas, CANVAS_SIZE);
+// let canvas = document.getElementById('gameCanvas');
+let drawer = new Drawer(/*canvas, CANVAS_SIZE*/);
 let board;
 let gameStarted
 
@@ -359,14 +315,8 @@ function gameStart() {
 	document.querySelector('.score').innerText = "Score: 0";
 }
 
-
-document.addEventListener('keydown', (event) => {
-	if (!gameStarted) return;
-
-	if(event.key == "ArrowUp") board.move(Direction.UP);
-	if(event.key == "ArrowDown") board.move(Direction.DOWN);
-	if(event.key == "ArrowLeft") board.move(Direction.LEFT);
-	if(event.key == "ArrowRight") board.move(Direction.RIGHT);
+function makeMove(direction) {
+	board.move(direction);
 
 	drawer.drawMap(board.map);
 
@@ -379,8 +329,57 @@ document.addEventListener('keydown', (event) => {
 		gameStarted = false;
 		alert("The end! Your score: " + board.score);
 	}
+}
+
+document.addEventListener('keydown', (event) => {
+	if (!gameStarted) return;
+
+	if(event.key == "ArrowUp") makeMove(Direction.UP);
+	if(event.key == "ArrowDown") makeMove(Direction.DOWN);
+	if(event.key == "ArrowLeft") makeMove(Direction.LEFT);
+	if(event.key == "ArrowRight") makeMove(Direction.RIGHT);
+
 });
 
+
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+
+let gesuredZone = document.getElementById('game-field');
+
+gesuredZone.addEventListener('touchstart', function(event) {
+    touchstartX = event.changedTouches[0].screenX;
+    touchstartY = event.changedTouches[0].screenY;
+}, false);
+
+gesuredZone.addEventListener('touchend', function(event) {
+    touchendX = event.changedTouches[0].screenX;
+    touchendY = event.changedTouches[0].screenY;
+    handleGesure();
+}, false); 
+
+function handleGesure() {
+    let xDiff = Math.abs(touchstartX - touchendX);
+    let yDiff = Math.abs(touchstartY - touchendY);
+    if (xDiff > yDiff){ 
+    	if (touchendX < touchstartX) {
+        	makeMove(Direction.LEFT);
+	    }
+	    if (touchendX > touchstartX) {
+	        makeMove(Direction.RIGHT);
+	    }
+    }
+     else {
+	    if (touchendY < touchstartY) {
+	        makeMove(Direction.UP);
+	    } 
+	    if (touchendY > touchstartY) {
+	    	makeMove(Direction.DOWN);
+	    }
+	}
+}
 
 
 

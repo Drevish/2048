@@ -1,10 +1,152 @@
+@font-face {
+	font-family: "Clear Sans";
+	src: url("fonts/clearsans.woff")
+}
+
+header {
+	display: inline-block;
+	width: 500px;
+}
+
+.caption{
+	display: inline-block;
+
+	font-size: 80px;
+	font-weight: bold;
+	font-family: Clear Sans;
+}
+
+.scores {
+	display: inline-block;
+}
+
+.new-game-panel{
+	min-width: 100%;
+}
+
+body{
+	background: #FAF8EF;
+}
+
 .wrapper{
 	width: 100%;
 	text-align: center;
 }
 
-#gameCanvas{
-	/*width: 500px;*/
-	/*height: 500px;*/
-	/*border: 10px solid red;*/
+.game-field-wrapper{
+	text-align: center;
+}
+
+table#game-field {
+	display: inline-block;
+	height: 500px;
+	width: 500px;
+	border-collapse: collapse;
+}
+
+table#game-field tr{
+	height: 125px;
+}
+
+table#game-field td{
+	width: 125px;
+	border: 10px solid #BBADA0;
+	font-size: 55px;
+	font-weight: bold;
+	font-family: Clear Sans;
+
+	box-sizing: border-box;
+	min-height: 125px;
+	min-width: 125px;
+	max-height: 125px;
+	max-width: 125px;
+}
+
+.tile-0{
+	background-color: #CDC1B4;
+}
+
+.tile-2{
+	background-color: #EEE4DA;
+	color: #776E65;
+} 
+
+.tile-4{
+	background-color: #EDE0C8;
+	color: #776E65;
+} 
+
+.tile-8{
+	background-color: #F2B179;
+	color: #F9F6F2;
+} 
+
+.tile-16{
+	background-color: #F59563;
+	color: #F9F6F2;
+} 
+
+.tile-32{
+	background-color: #F67C5F;
+	color: #F9F6F2;
+} 
+
+.tile-64{
+	background-color: #F65E3B;
+	color: #F9F6F2;
+} 
+
+.tile-128{
+	background-color: #EDCF72;
+	color: #F9F6F2;
+} 
+
+.tile-256 {
+	background-color: #F2C75E;
+	color: #F9F6F2;
+}
+
+.tile-512 {
+	background-color: #F4C250;
+	color: #F9F6F2;
+}
+
+.tile-1024 {
+	background-color: #F3BE3C;
+	color: #F9F6F2;
+}
+
+.tile-2048 {
+	background-color: #F6BC2B;
+	color: #F9F6F2;
+}
+
+.tile-4096 {
+	background-color: #FF4F3D;
+	color: #F9F6F2;
+}
+
+.tile-8192 {
+	background-color: #FF341D;
+	color: #F9F6F2;
+}
+
+.tile-16384 {
+	background-color: #FF331F;
+	color: #F9F6F2;
+}
+
+.tile-32768 {
+	background-color: #6DAEDC;
+	color: #F9F6F2;
+}
+
+.tile-65536 {
+	background-color: #589BE6;
+	color: #F9F6F2;
+}
+
+.tile-131072 {
+	background-color: #0073C5;
+	color: #F9F6F2;
 }
