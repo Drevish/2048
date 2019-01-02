@@ -1,4 +1,3 @@
-
 describe("Board", function() {
 	describe("arraysEqual()", function() {
 	  it("Checks whether two two-dimensinal square arrays are equal", function() {
@@ -309,5 +308,38 @@ describe("Board", function() {
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 4, true)
 		});
+	});
+});
+
+describe("List", function() {
+	describe("construtor()", function() {
+	  it("adds all cells from the NxN map", function() {
+	  	let list = new List(2);
+	  	let map = [[false, false], [false, false]];
+	  	for (let i = 0; i < list.a.length; i++) {
+	  		map[list.a[i].i][list.a[i].j] = true;
+	  	}
+	    assert.equal(map[0][0] && map[0][1] && map[1][0] && map[1][1], true);
+	  });
+
+	  it("adds non-existing element", function() {
+	  	let list = new List(2);
+	  	list.addNew(5, 2);
+	  	let is = false;
+	  	for (let i = 0; i < list.a.length; i++) {
+	  		if (list.a[i].i == 5 && list.a[i].j == 2) is = true;
+	  	}
+	  	assert.equal(is, true);
+	  });
+
+	   it("deletes existing element", function() {
+	  	let list = new List(2);
+	  	list.delete(0, 1);
+	  	let is = false;
+	  	for (let i = 0; i < list.a.length; i++) {
+	  		if (list.a[i].i == 0 && list.a[i].j == 1) is = true;
+	  	}
+	  	assert.equal(is, false);
+	  });
 	});
 });

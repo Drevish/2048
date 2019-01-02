@@ -1,0 +1,83 @@
+**************************************************************************************************************************************
+Что делать дальше:
+сделать универсальную move() 
+сделать конец игры
+улучшать
+**************************************************************************************************************************************
+
+Class Board:
+private:
+	int[][] map - 2d map of values
+	int score
+
+	bool isFull()- returns true if the map is full
+public:
+	Board(n) 	- initializes map n x x
+	Board() 	- Board(4)
+
+	getScore()
+	getMap()
+
+	bool isMovePossible() - if map isn't full move is possible, otherwise checks it
+	spawnNew()	- if map isn't full adds new 2 or 4(if the score is > 200) to the map
+	move(enum i)- makes a move in a direction(UP, DOWN, RIGHT, LEFT) => changes map state
+
+
+Class Drawer():
+private:
+	tiles settings
+public:
+	Drawer(canvas, mapSize)
+	drawMap(int[][])
+ 
+
+bool gameStarted = false;
+
+
+before tick (when page loads or new game button clicked):
+	creates new map (4) by default or anything that is specified in cookies
+	board.spawnNew()
+	creates new Drawer
+	drawer.drawMap()
+	gameStarted = true
+
+
+main tick function:
+	is called from keyboard event listener, gets direction as an argument
+	algorithm:
+	if(!gameStarted) return
+	move(direction)
+	if(!isMovePossible)
+		gameStarted = false
+		endGame
+		return
+	drawer.drawMap(board.getMap)
+	check for best score if beaten
+
+after end (endGame function):
+	fade board
+	show Game over!
+	show score
+	show try again button
+	(go to leaderboard)
+
+
+
+
+
+
+
+Для эффективности сделать в Board приватное поле empty Tiles как список пустых полей
+Изначально все пустые, когда какая-то спавном занимается то вызывается функция занять с аргументами i, j, когда мув происходит то если меняется положение то какая-то так же занимается и вызывается функция освободить с аргументами i,j
+Освободить просто находит по i, j и удаляет а занять добавляет с данными i, j
+Рисовку надо сделать как табличную вёрстку или SVG но для начала пойдёт на похуй канвас
+Надо сделать чтобы можно было свои картинки загружать на разные плитки
+Выбирать от 4 до допустим 16 размер карты при старте новой игры
+Сделать лидерборд по картам и чтобы в него записывался ник если хочешь иначе просто Player или же empty
+И чтобы максимальный результат и конфиг плиток записывался в куки
+А текущий результат и положение на карте в сессию
+insert(i,j)
+delete(i,j)
+isEmpty()
+getSize()
+get(k)
