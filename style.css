@@ -6,6 +6,8 @@
 header {
 	display: inline-block;
 	width: 500px;
+	text-align: left;
+	margin-top: 30px;
 }
 
 .caption{
@@ -14,10 +16,13 @@ header {
 	font-size: 80px;
 	font-weight: bold;
 	font-family: Clear Sans;
+	color: #776E65;
 }
 
 .scores {
 	display: inline-block;
+	text-align: right;
+	width: 60%;
 }
 
 .new-game-panel{
@@ -28,14 +33,62 @@ body{
 	background: #FAF8EF;
 }
 
-.wrapper{
-	width: 100%;
+.wrapper{	
 	text-align: center;
 }
 
 .game-field-wrapper{
 	text-align: center;
 }
+
+.my-button{
+	display: inline-block;
+	text-align: center;
+	background-color: #BBADA0;
+	padding: 5px 20px 0px 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	margin-left: 3px;
+	font-family: Clear Sans;
+}
+
+.my-button .my-button-text {
+	color: #EEE4DA;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.my-button .my-button-number {
+	color: #fff;
+	font-weight: bold;
+	font-size: 25px;
+}
+
+.new-game-panel{
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.new-game-panel .game-description {
+	display: inline-block;
+	font-family: Clear Sans;
+	font-size: 18px;	
+	color: #776E65;
+	padding-top: 5px;
+}
+
+.new-game-panel button.new-game {
+	background-color: #8F7A66;
+	color: #F1EEEA;
+	font-weight: bold;
+	font-size: 18px;
+	cursor: pointer;
+	float: right;
+	padding-bottom: 7px;
+}
+
+
 
 table#game-field {
 	display: inline-block;
@@ -62,91 +115,92 @@ table#game-field td{
 	max-width: 125px;
 }
 
-.tile-0{
+table#game-field td.tile-0{
 	background-color: #CDC1B4;
 }
 
-.tile-2{
+table#game-field td.tile-2{
 	background-color: #EEE4DA;
 	color: #776E65;
 } 
 
-.tile-4{
+table#game-field td.tile-4{
 	background-color: #EDE0C8;
 	color: #776E65;
 } 
 
-.tile-8{
+table#game-field td.tile-8{
 	background-color: #F2B179;
 	color: #F9F6F2;
 } 
 
-.tile-16{
+table#game-field td.tile-16{
 	background-color: #F59563;
 	color: #F9F6F2;
 } 
 
-.tile-32{
+table#game-field td.tile-32{
 	background-color: #F67C5F;
 	color: #F9F6F2;
 } 
 
-.tile-64{
+table#game-field td.tile-64{
 	background-color: #F65E3B;
 	color: #F9F6F2;
 } 
 
-.tile-128{
+table#game-field td.tile-128{
 	background-color: #EDCF72;
 	color: #F9F6F2;
+	font-size: 45px;
 } 
 
-.tile-256 {
+table#game-field td.tile-256 {
 	background-color: #F2C75E;
 	color: #F9F6F2;
 }
 
-.tile-512 {
+table#game-field td.tile-512 {
 	background-color: #F4C250;
 	color: #F9F6F2;
 }
 
-.tile-1024 {
+table#game-field td.tile-1024 {
 	background-color: #F3BE3C;
 	color: #F9F6F2;
 }
 
-.tile-2048 {
+table#game-field td.tile-2048 {
 	background-color: #F6BC2B;
 	color: #F9F6F2;
 }
 
-.tile-4096 {
+table#game-field td.tile-4096 {
 	background-color: #FF4F3D;
 	color: #F9F6F2;
 }
 
-.tile-8192 {
+table#game-field td.tile-8192 {
 	background-color: #FF341D;
 	color: #F9F6F2;
 }
 
-.tile-16384 {
+table#game-field td.tile-16384 {
 	background-color: #FF331F;
 	color: #F9F6F2;
 }
 
-.tile-32768 {
+table#game-field td.tile-32768 {
 	background-color: #6DAEDC;
 	color: #F9F6F2;
 }
 
-.tile-65536 {
+table#game-field td.tile-65536 {
 	background-color: #589BE6;
 	color: #F9F6F2;
 }
 
-.tile-131072 {
+table#game-field td.tile-131072 {
 	background-color: #0073C5;
 	color: #F9F6F2;
 }

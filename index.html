@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>2048</title>
+	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -9,16 +10,14 @@
 		<header>
 			<div class="caption">2048</div>
 			<div class="scores">
-				<div class="score">Score: 0</div>
-				<div class="bestScore">Best: 0</div>
+				<div class="score my-button"><div class="my-button-text">Score</div> <div class="my-button-number">0</div></div>
+				<div class="bestScore my-button"><div class="my-button-text">Best</div> <div class="my-button-number">0</div></div>
 			</div>
 			<div class="new-game-panel">
 				<div class="game-description">Join the numbers and get to the <b>2048 tile!</b></div>
-				<button class="new-game">New game</button>
+				<button class="new-game my-button">New Game</button>
 			</div>
 		</header>
-	
-		<!-- <canvas id="gameCanvas"></canvas> -->
 
 		<div class="game-field-wrapper">
 			<table id="game-field">
