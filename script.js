@@ -127,10 +127,25 @@ class Board {
 
 	// checks whether something will change if user will make a move
 	isMovePossible() {
+		// if map is not full we always can make a move
 		if(!this.isFull()) return true;
-		for (let direction = Direction.UP; direction <= Direction.LEFT; direction++) {
-			if (!this.arraysEqual(this.moveMap(direction), this.map)) return true;	
+
+		// map is full so we can make a move only if there are two adjacent tiles with the same value
+		// let's check only down and right sides to avoid repetitions
+		for (let i = 0; i < this.mapSize; i++) {
+			for (let j = 0; j < this.mapSize; j++) {
+				if (i != this.mapSize - 1 && this.map[i][j] == this.map[i + 1][j]) {
+					// we can move in a vertical direction
+					return true;
+				}
+				if (j != this.mapSize - 1 && this.map[i][j] == this.map[i][j + 1]) {
+					// we can move in a horizontal direction
+					return true;
+				}
+			}
 		}
+
+		// move is impossible
 		return false;
 	}
 
@@ -152,40 +167,10 @@ class Board {
 
 	moveMap(direction){
 		// copy this.map to the map
-		let map = [];
-		for (let i = 0; i < this.mapSize; i++) {
-			map[i] = [];
-			for (let j = 0; j < this.mapSize; j++) 
-				map[i][j] = this.map[i][j];
-		}
-		/*if (direction == Direction.UP || direction == Direction.DOWN) {
-			for (let j = 0; j < this.mapSize; j++) {
-				if (direction == Direction.UP) {
-					for (let i = 1; i < this.mapSize; i++) {
-						moveF(i, j, map, direction);
-					}
-				}
-				if (direction == Direction.DOWN) {
-					for (let i = this.mapSize - 2; i >= 0; i--) {
-						moveF(i, j, map, direction);
-					}
-				}
-			}
-		} 
-		if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-			for (let i = 0; i < this.mapSize; i++) {
-				if (direction == Direction.LEFT) {
-					for (let j = 1; j < this.mapSize; j++) {
-						moveF(i, j, map, direction);
-					}
-				}
-				if (direction == Direction.RIGHT) {
-					for (let j = this.mapSize - 2; j >= 0; j--) {
-						moveF(i, j, map, direction);
-					}
-				}
-			}
-		}*/
+		let map = this.map
+
+		// flag that is true if at least one tile has changed it's location
+		let somethingChanged = false;
 
 		let changedTiles = [];
 		for (let i = 0; i < this.mapSize; i++) {
@@ -214,6 +199,7 @@ class Board {
 					}
 					if (newI == i) continue;
 					map[i][j] = 0;
+					somethingChanged = true;
 					this.emptyCells.addNew(i, j);
 					if (map[newI][j] == 0) {
 						map[newI][j] = curVal;
@@ -254,6 +240,7 @@ class Board {
 					}
 					if (newI == i) continue;
 					map[i][j] = 0;
+					somethingChanged = true;
 					this.emptyCells.addNew(i, j);
 					if (map[newI][j] == 0) {
 						map[newI][j] = curVal;
@@ -294,6 +281,7 @@ class Board {
 					}
 					if (newJ == j) continue;
 					map[i][j] = 0;
+					somethingChanged = true;
 					this.emptyCells.addNew(i, j);
 					if (map[i][newJ] == 0) {
 						map[i][newJ] = curVal;
@@ -334,6 +322,7 @@ class Board {
 					}
 					if (newJ == j) continue;
 					map[i][j] = 0;
+					somethingChanged = true;
 					this.emptyCells.addNew(i, j);
 					if (map[i][newJ] == 0) {
 						map[i][newJ] = curVal;
@@ -354,18 +343,15 @@ class Board {
 			}
 		}
 
-		return map;
+		return somethingChanged;
 	}
 
 	// makes a move in a specified direction and spawns new tile if it's possible
 	move(direction) {
-		let newMap = this.moveMap(direction);
-		let mapsEqual = this.arraysEqual(this.map, newMap);
-		if (mapsEqual) return;
-
-		this.map = newMap;
-
-		this.spawnNew();
+		let somethingChanged = this.moveMap(direction);
+		if (somethingChanged) {
+			this.spawnNew();
+		}
 	}
 }
 
@@ -399,12 +385,15 @@ function makeMove(direction) {
 	if (bestScore < board.score) bestScore = board.score;
 	document.querySelector('.bestScore .my-button-number').innerText = bestScore;
 
-	/*if (!board.isMovePossible()) {
-		gameStarted = false;
-		alert("The end! Your score: " + board.score);
-	}*/
+	if (!board.isMovePossible()) {
+		gameEnd();	
+	}
+}
 
-	console.log(board.emptyCells);
+function gameEnd() {
+	drawer.drawMap(board.map);
+	gameStarted = false;
+	alert("The end! Your score: " + board.score);
 }
 
 document.addEventListener('keydown', (event) => {
@@ -428,15 +417,21 @@ let gesuredZone = document.getElementById('game-field');
 gesuredZone.addEventListener('touchstart', function(event) {
     touchstartX = event.changedTouches[0].screenX;
     touchstartY = event.changedTouches[0].screenY;
+    event.preventDefault();
+    return false;
 }, false);
 
 gesuredZone.addEventListener('touchend', function(event) {
     touchendX = event.changedTouches[0].screenX;
     touchendY = event.changedTouches[0].screenY;
     handleGesure();
+    event.preventDefault();
+    return false;
 }, false); 
 
 function handleGesure() {
+	if (!gameStarted) return;
+
     let xDiff = Math.abs(touchstartX - touchendX);
     let yDiff = Math.abs(touchstartY - touchendY);
     if (xDiff > yDiff){ 
