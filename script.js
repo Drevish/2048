@@ -26,5 +26,11 @@ let drawer = new Drawer();
 let board;
 let gameStarted
 
-let bestScore = 0;
+// getting best score from cookie
+let bestScore = getCookie("best");
+if (bestScore === undefined) bestScore = 0;
+
+// refresh best score
+document.querySelector(BEST_SCORE_QUERY).innerText = bestScore;
+
 gameStart();

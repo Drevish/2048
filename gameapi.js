@@ -1,5 +1,13 @@
 const END_GAME_QUERY = ".game-field-wrapper .end-game-info";
 
+// gets a cookie value with a specified name
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 // function that is used at the start of a new game
 function gameStart() {
 	// creating new game board
@@ -42,9 +50,21 @@ function makeMove(direction) {
 	drawer.drawMap(board.map);
 
 	// scores
+
+	// refresh score
 	document.querySelector(SCORE_QUERY).innerText = board.score;
-	if (bestScore < board.score) bestScore = board.score;
-	document.querySelector(BEST_SCORE_QUERY).innerText = bestScore;
+
+	//update best score
+	if (bestScore < board.score) {
+		bestScore = board.score;
+
+		// refresh best score
+		document.querySelector(BEST_SCORE_QUERY).innerText = bestScore;
+
+		// update best score in cookie
+		var date = new Date(new Date().getTime() + 100000000000000);
+		document.cookie = "best=" + bestScore + "; path=/; expires=" + date.toUTCString();
+	}
 
 	if (!board.isMovePossible()) {
 		gameEnd();	

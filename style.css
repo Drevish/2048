@@ -277,3 +277,19 @@ table#game-field td.tile-131072 {
 table#game-field td.tile-131072::after{
 	content: '131072';
 }
+
+.low-text-wrapper {
+	text-align: center;
+}
+
+.rules-description {
+	width: 510px;
+	margin-top: 50px;
+	display: inline-block;
+	text-align: left;
+	padding-left: 10px;
+	font-family: "Clear Sans";
+	font-size: 18px;
+	line-height: 33px;
+	color: #736B62;
+}
