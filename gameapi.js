@@ -1,3 +1,5 @@
+const END_GAME_QUERY = ".game-field-wrapper .end-game-info";
+
 // function that is used at the start of a new game
 function gameStart() {
 	// creating new game board
@@ -14,7 +16,24 @@ function gameStart() {
 
 	// score refreshing
 	document.querySelector(SCORE_QUERY).innerText = "0";
+
+	// map opacity decreasing for 5s
+	document.querySelector(TABLE_QUERY).style.transition = "0s";
+	document.querySelector(TABLE_QUERY).style.opacity = "1";
+
+	// game over text hiding
+	document.querySelector(END_GAME_QUERY).style.display = "none";
 }
+
+var addRule = (function(style){
+    var sheet = document.head.appendChild(style).sheet;
+    return function(selector, css){
+        var propText = Object.keys(css).map(function(p){
+            return p+":"+css[p]
+        }).join(";");
+        sheet.insertRule(selector + "{" + propText + "}", sheet.cssRules.length);
+    }
+})(document.createElement("style"));
 
 // function that is used every time user makes a move
 function makeMove(direction) {
@@ -36,5 +55,13 @@ function makeMove(direction) {
 function gameEnd() {
 	drawer.drawMap(board.map);
 	gameStarted = false;
-	alert("The end! Your score: " + board.score);
+
+	// map opacity decreasing for 3s
+	document.querySelector(TABLE_QUERY).style.transition = "3s";
+	document.querySelector(TABLE_QUERY).style.opacity = "0.35";
+
+	// game over text showing
+	setTimeout(() => {
+	document.querySelector(END_GAME_QUERY).style.display = "inline-block";},
+	2000);
 }

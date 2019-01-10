@@ -56,7 +56,9 @@ function handleGesure() {
 	}
 }
 
-// new game button
-document.querySelector('button.new-game').addEventListener("click", function(e){
-	gameStart();
-})
+// new game buttons
+document.querySelectorAll('button.new-game').forEach(function(e) {
+	e.addEventListener("click", function(e){
+		gameStart();
+	});
+});
