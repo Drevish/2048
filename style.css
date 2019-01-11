@@ -303,3 +303,116 @@ table#game-field td.tile-131072::after{
 	line-height: 33px;
 	color: #736B62;
 }
+
+
+@media (max-width: 550px) {
+header {
+	width: 300px;
+}
+
+.caption{
+	font-size: 30px;
+}
+
+.scores {
+	float: right;
+	width: 75%;
+}
+
+.end-game-info .game-over {
+	font-size: 40px;
+	width: 300px;
+	margin-top: 80px;
+	margin-bottom: 10px;
+}
+
+.my-button{
+	padding: 3px 10px 0px 10px;
+}
+
+.my-button .my-button-number {
+	font-size: 20px;
+}
+
+.new-game-panel{
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.new-game-panel button.new-game {
+	float: left;
+	margin: 20px 0 20px 0;
+}
+
+table#game-field {
+	height: 300px;
+	width: 300px;
+}
+
+
+table#game-field tr{
+	height: 75px;
+}
+
+table#game-field td{
+	width: 75px;
+	border: 5px solid #BBADA0;
+	font-size: 35px;
+
+	min-height: 75px;
+	min-width: 75px;
+	max-height: 75px;
+	max-width: 75px;
+}
+
+table#game-field td.tile-128{
+	font-size: 30px;
+} 
+
+table#game-field td.tile-256 {
+	font-size: 30px;
+}
+
+table#game-field td.tile-512 {
+	font-size: 30px;
+}
+
+table#game-field td.tile-1024 {
+	font-size: 23px;
+}
+
+table#game-field td.tile-2048 {
+	font-size: 23px;
+}
+
+table#game-field td.tile-4096 {
+	font-size: 23px;
+}
+
+table#game-field td.tile-8192 {
+	font-size: 23px;
+}
+
+table#game-field td.tile-16384 {
+	font-size: 20px;
+}
+
+table#game-field td.tile-32768 {
+	font-size: 20px;
+}
+
+table#game-field td.tile-65536 {
+	font-size: 20px;
+}
+
+table#game-field td.tile-131072 {
+	font-size: 15px;
+}
+
+.rules-description {
+	width: 310px;
+	margin-top: 20px;
+	font-size: 15px;
+	line-height: 25px;
+}
+}
