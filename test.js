@@ -1,3 +1,17 @@
+// if board.emptyTiles are not correct in relation to map, changes it to the correct one
+function setEmptyTilesByMap(board) {
+	board.emptyCells.a = [];
+	for (let i = 0; i < board.map.length; i++) {
+		for (let j = 0; j < board.map[i].length; j++) {
+			if (board.map[i][j] == 0) {
+				// add empty tile
+				board.emptyCells.addNew(i, j);
+				console.log("added: " + i +  " " + j);
+			}
+		}
+	}
+}
+
 describe("Board", function() {
 	describe("arraysEqual()", function() {
 	  it("Checks whether two two-dimensinal square arrays are equal", function() {
@@ -21,30 +35,35 @@ describe("Board", function() {
 	    	[2, 4],
 	    	[8, 16]
 	    	];
+	    	setEmptyTilesByMap(board);
 	    	assert.equal(board.isFull(), true);
 
 	    	board.map = [
 	    	[2, 4],
 	    	[8, 0]
 	    	];
+	    	setEmptyTilesByMap(board);
 	    	assert.equal(board.isFull(), false);
 
 	    	board.map = [
 	    	[2, 4],
 	    	[0, 16]
 	    	];
+	    	setEmptyTilesByMap(board);
 	    	assert.equal(board.isFull(), false);
 
 	    	board.map = [
 	    	[0, 4],
 	    	[8, 16]
 	    	];
+	    	setEmptyTilesByMap(board);
 	    	assert.equal(board.isFull(), false);
 
 	    	board.map = [
 	    	[2, 0],
 	    	[8, 16]
 	    	];
+	    	setEmptyTilesByMap(board);
 	    	assert.equal(board.isFull(), false);
 		});
 	});
@@ -62,6 +81,7 @@ describe("Board", function() {
 		    [2, 4],
 		    [8, 16]
 		    ];
+	    	setEmptyTilesByMap(board);
 			assert.equal(board.isMovePossible(), false);
 		});
 
@@ -71,6 +91,7 @@ describe("Board", function() {
 		    [2, 0],
 		    [8, 16]
 		    ];
+	    	setEmptyTilesByMap(board);
 			assert.equal(board.isMovePossible(), true);
 		});
 
@@ -80,6 +101,7 @@ describe("Board", function() {
 		    [2, 2],
 		    [2, 2]
 		    ];
+	    	setEmptyTilesByMap(board);
 		    let curScore = board.score;
 		    board.isMovePossible()
 			assert.equal(curScore == board.score, true);
@@ -94,6 +116,7 @@ describe("Board", function() {
 			[2, 4],
 			[4, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.spawnNew();
 			assert.equal(board.map[1][1] == 2 || board.map[1][1] == 4, true);
 
@@ -101,6 +124,7 @@ describe("Board", function() {
 			[2, 4],
 			[0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.spawnNew();
 			assert.equal(board.map[1][1] == 2 || board.map[1][0] == 2 
 				|| board.map[1][1] == 4 || board.map[1][0] == 4, true);
@@ -116,6 +140,7 @@ describe("Board", function() {
 			[2, 4],
 			[4, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.map = mapBefore;
 			let scoreBefore = board.score;
 			board.move(Direction.UP);
@@ -129,6 +154,7 @@ describe("Board", function() {
 			[2, 4],
 			[4, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.map = mapBefore;
 			let scoreBefore = board.score;
 			board.move(Direction.LEFT);
@@ -142,6 +168,7 @@ describe("Board", function() {
 			[2, 4],
 			[4, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			let expectedMap1 = [
 			[2, 2],
 			[4, 4]
@@ -162,6 +189,7 @@ describe("Board", function() {
 			[2, 4],
 			[4, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			let expectedMap1 = [
 			[2, 4],
 			[2, 4]
@@ -183,6 +211,7 @@ describe("Board", function() {
 				[2, 2, 2],
 				[2, 2, 2]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[0][1] == 4 && board.map[0][2] == 4 &&
 				board.map[1][0] == 2 && board.map[1][1] == 2 && board.map[1][2] == 2, true)
@@ -195,6 +224,7 @@ describe("Board", function() {
 				[2, 2, 2],
 				[2, 2, 2]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[0][1] == 4 && board.map[0][2] == 4 &&
 				board.map[1][0] == 4 && board.map[1][1] == 4 && board.map[1][2] == 4, true)
@@ -207,6 +237,7 @@ describe("Board", function() {
 				[2, 2, 2],
 				[4, 4, 4]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[0][1] == 4 && board.map[0][2] == 4 &&
 				board.map[1][0] == 2 && board.map[1][1] == 2 && board.map[1][2] == 2 &&
@@ -220,6 +251,7 @@ describe("Board", function() {
 				[2, 2, 2],
 				[4, 4, 4]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[0][1] == 4 && board.map[0][2] == 4 &&
 				board.map[1][0] == 4 && board.map[1][1] == 4 && board.map[1][2] == 4, true)
@@ -233,6 +265,7 @@ describe("Board", function() {
 				[2, 0, 0, 0],
 				[2, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 8 && board.map[1][0] == 4, true)
 		});
@@ -245,6 +278,7 @@ describe("Board", function() {
 				[2, 0, 0, 0],
 				[2, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 4, true)
 		});
@@ -257,6 +291,7 @@ describe("Board", function() {
 				[4, 0, 0, 0],
 				[4, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 8 && board.map[1][0] == 4, true)
 		});
@@ -269,6 +304,7 @@ describe("Board", function() {
 				[2, 0, 0, 0],
 				[4, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 2 && board.map[2][0] == 4, true)
 		});
@@ -281,6 +317,7 @@ describe("Board", function() {
 				[0, 0, 0, 0],
 				[4, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 4, true)
 		});
@@ -293,6 +330,7 @@ describe("Board", function() {
 				[2, 0, 0, 0],
 				[4, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 4, true)
 		});
@@ -305,6 +343,7 @@ describe("Board", function() {
 				[2, 0, 0, 0],
 				[4, 0, 0, 0]
 			];
+	    	setEmptyTilesByMap(board);
 			board.move(Direction.UP);
 			assert.equal(board.map[0][0] == 4 && board.map[1][0] == 4, true)
 		});
